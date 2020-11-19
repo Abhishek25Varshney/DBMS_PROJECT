@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -533,5 +534,33 @@ public class ProjectServiceImpl implements ProjectService {
 			log.error("Error while parsing date.");
 		}
 		return date;
+	}
+
+	@Override
+	public Map<String, Integer> getBarChartData() {
+		List<Organism> allOrganism = (List<Organism>) organismRepo.findAll();
+		Map<String, Integer> dateWiseCountMap = new HashMap<String, Integer>();
+		for (Organism organism : allOrganism) {
+			if (!dateWiseCountMap.containsKey(organism.getRegisteredDate())) {
+				dateWiseCountMap.put(organism.getRegisteredDate(), 0);
+			}
+			dateWiseCountMap.put(organism.getRegisteredDate(), dateWiseCountMap.get(organism.getRegisteredDate()) + 1);
+		}
+		
+		
+		return dateWiseCountMap;
+	}
+	
+	@Override
+	public Map<String, Integer> getPieChartData() {
+		List<String> species = organismRepo.findAllOrganismSpecies();
+		Map<String, Integer> pieChartMap = new HashMap<String, Integer>();
+		for (String string : species) {
+			if (!pieChartMap.containsKey(string)) {
+				pieChartMap.put(string, organismRepo.countOrganismOfSpecificSpecies(string));
+			}
+		}
+		
+		return pieChartMap;
 	}
 }

@@ -18,6 +18,8 @@
 <link rel="stylesheet" type="text/css"
 	href="/css/sb-admin-2.min.css"
 	th:href="@{/css/sb-admin-2.min.css}" />
+<script type="text/javascript"
+src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body id="page-top">
@@ -201,15 +203,40 @@
 
           <!-- Content Row -->
 
+          <!-- Content Row -->
+
           <div class="row">
 
-         
-
-        
-
-  
-
+            <!-- Area Chart -->
+            <div class="col-xl-8 col-lg-7">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Organisms Registeration Overview</h6>
+                 
+                </div>
+                <!-- Card Body -->
+                <div class="card-body" >
+                <div id="chart_div" style=" height: 450px;"></div>
+                </div>
+              </div>
             </div>
+
+            <!-- Pie Chart -->
+            <div class="col-xl-4 col-lg-5">
+              <div class="card shadow mb-4">
+                <!-- Card Header - Dropdown -->
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Organism Species</h6>
+                 
+                </div>
+                <!-- Card Body -->
+                <div class="card-body">
+                <div id="piechart" style=" height: 450px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
 
             
 
@@ -263,7 +290,55 @@
 	th:href="@{/js/demo/chart-area-demo.js}"></script>
   <script  type="text/javascript" src="/js/demo/chart-pie-demo.js"
 	th:href="@{/js/demo/chart-pie-demo.js}"></script>
+	<script th:inline="javascript">
+	var real_data =/*[[${barChartData}]]*/'noValue';
+	var pie_data=/*[[${pieChartData}]]*/'noValue';
+	$(document).ready(function() {
+		google.charts.load('current', {
+			packages : [ 'corechart', 'bar' ]
+		});
+		google.charts.setOnLoadCallback(drawColumnChart);
+		google.charts.setOnLoadCallback(drawPieChart);
+	});
 
+	function drawColumnChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Date');
+		data.addColumn('number', 'Organism Registered');
+		Object.keys(real_data).forEach(function(key) {
+			data.addRow([ key, real_data[key] ]);
+		});
+		var options = {
+			title : '',
+			hAxis : {
+				title : 'Date',
+			},
+			vAxis : {
+				title : 'Organism Registered'
+			},
+			colors: ['#4e73df']
+		};
+		var chart = new google.visualization.ColumnChart(document
+				.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+
+	function drawPieChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Species');
+		data.addColumn('number', 'Organisms');
+		Object.keys(pie_data).forEach(function(key) {
+			data.addRow([ key, pie_data[key] ]);
+		});
+		var options = {
+			title : '',
+			colors: ['#36b9cc','#20c9a6']
+		};
+		var chart = new google.visualization.PieChart(document
+				.getElementById('piechart'));
+		chart.draw(data, options);
+	}
+</script>
 </body>
 
 </html>

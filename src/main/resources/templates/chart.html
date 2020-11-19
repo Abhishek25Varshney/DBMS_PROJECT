@@ -1,47 +1,70 @@
 <!doctype html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<title>Pie Chart</title>
-<script type="text/javascript">
-window.onload = function() {
-	
-var dps = [[]];
-var chart = new CanvasJS.Chart("chartContainer", {
-	theme: "light2",
-	animationEnabled: true,
-	exportEnabled: true,
-	title:{
-		text: "Actions against Racism"
-	},
-	data: [{
-		type: "pyramid",
-		indexLabel: "{label}: {y}",
-		dataPoints: dps[0]
-	}]
-});
- 
-var yValue;
-var label;
- 
-<th:each="dataPoints:${dataPointsList}"/>
-	<th:each="dataPoint:${dataPoints}"/>
-		yValue = parseFloat("${dataPoint.y}");
-		label = "${dataPoint.label}";
-		dps[parseInt("${loop.index}")].push({
-			label : label,
-			y : yValue
-		});
- 
-chart.render();
- 
-}
-</script>
+<title>Experiment List</title>
+<script
+src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet"
+href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+<script type="text/javascript"
+src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 <body>
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<div align="center" style="width: 1000px;">
+	<h2>Spring Boot Google Charts Example</h2>
+	<div id="chart_div"></div>
+	<div id="piechart" style="width: 900px; height: 500px;"></div>
+</div>
+<script th:inline="javascript">
+	var real_data =/*[[${chartData}]]*/'noValue';
+
+	$(document).ready(function() {
+		google.charts.load('current', {
+			packages : [ 'corechart', 'bar' ]
+		});
+		google.charts.setOnLoadCallback(drawColumnChart);
+		google.charts.setOnLoadCallback(drawPieChart);
+	});
+
+	function drawColumnChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Year');
+		data.addColumn('number', 'Views');
+		Object.keys(real_data).forEach(function(key) {
+			data.addRow([ key, real_data[key] ]);
+		});
+		var options = {
+			title : 'Blog stats',
+			hAxis : {
+				title : 'Years',
+			},
+			vAxis : {
+				title : 'View Count'
+			}
+		};
+		var chart = new google.visualization.ColumnChart(document
+				.getElementById('chart_div'));
+		chart.draw(data, options);
+	}
+
+	function drawPieChart() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', 'Year');
+		data.addColumn('number', 'Views');
+		Object.keys(real_data).forEach(function(key) {
+			data.addRow([ key, real_data[key] ]);
+		});
+		var options = {
+			title : 'Blog stats'
+		};
+		var chart = new google.visualization.PieChart(document
+				.getElementById('piechart'));
+		chart.draw(data, options);
+	}
+</script>
 </body>
 </html>

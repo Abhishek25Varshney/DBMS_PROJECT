@@ -3,10 +3,11 @@ package project.dbms.controller;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +39,8 @@ public class ProjectController {
 		mv.addObject("totalSamples", service.getSampleCount());
 		mv.addObject("totalOrganisms", service.getOrganismCount());
 		mv.addObject("latestOrganismName", service.getLatestOrganismRegisteredName());
+		mv.addObject("barChartData", service.getBarChartData());
+		mv.addObject("pieChartData", service.getPieChartData());
 		return mv;
 	}
 
@@ -320,6 +323,17 @@ public class ProjectController {
 		mv.setViewName("chart");
 		mv.addObject("dataPointsList", canvasjsDataList);
 		return mv;
+	}
+
+	@GetMapping("/chart")
+	public String getPieChart(Model model) {
+		Map<String, Integer> graphData = new TreeMap<>();
+		graphData.put("2016", 147);
+		graphData.put("2017", 1256);
+		graphData.put("2018", 3856);
+		graphData.put("2019", 19807);
+		model.addAttribute("chartData", graphData);
+		return "chart";
 	}
 
 }

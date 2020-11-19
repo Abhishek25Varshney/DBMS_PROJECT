@@ -74,4 +74,8 @@ public interface ProjectService {
 
 	List<List<Map<Object, Object>>> getCanvasjsBarChartData();
 
+	Map<String, Integer> getBarChartData();
+
+	Map<String, Integer> getPieChartData();
+
 }

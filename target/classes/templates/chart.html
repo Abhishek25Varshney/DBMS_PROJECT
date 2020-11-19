@@ -1,0 +1,47 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<title>Pie Chart</title>
+<script type="text/javascript">
+window.onload = function() {
+	
+var dps = [[]];
+var chart = new CanvasJS.Chart("chartContainer", {
+	theme: "light2",
+	animationEnabled: true,
+	exportEnabled: true,
+	title:{
+		text: "Actions against Racism"
+	},
+	data: [{
+		type: "pyramid",
+		indexLabel: "{label}: {y}",
+		dataPoints: dps[0]
+	}]
+});
+ 
+var yValue;
+var label;
+ 
+<th:each="dataPoints:${dataPointsList}"/>
+	<th:each="dataPoint:${dataPoints}"/>
+		yValue = parseFloat("${dataPoint.y}");
+		label = "${dataPoint.label}";
+		dps[parseInt("${loop.index}")].push({
+			label : label,
+			y : yValue
+		});
+ 
+chart.render();
+ 
+}
+</script>
+</head>
+<body>
+<div id="chartContainer" style="height: 370px; width: 100%;"></div>
+<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+</body>
+</html>

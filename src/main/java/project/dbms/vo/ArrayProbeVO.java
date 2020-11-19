@@ -22,6 +22,26 @@ public class ArrayProbeVO {
 	private String arrayProbe;
 
 	private Set<MRNAExpressionVO> mRNAExpression = new HashSet<MRNAExpressionVO>();
+	
+	private int geneSequenceId;
+
+	private String addMore="NO";
+	
+	public String getAddMore() {
+		return addMore;
+	}
+
+	public void setAddMore(String addMore) {
+		this.addMore = addMore;
+	}
+	
+	public int getGeneSequenceId() {
+		return geneSequenceId;
+	}
+
+	public void setGeneSequenceId(int geneSequenceId) {
+		this.geneSequenceId = geneSequenceId;
+	}
 
 	public int getId() {
 		return id;

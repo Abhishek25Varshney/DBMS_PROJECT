@@ -7,6 +7,24 @@ public class GeneSequenceVO {
 	private int id;
 	private String sequence;
 	private Set<ArrayProbeVO> arrayProbes = new HashSet<ArrayProbeVO>();
+	private int chromosomeId;
+	private String addMore="NO";
+	
+	public String getAddMore() {
+		return addMore;
+	}
+
+	public void setAddMore(String addMore) {
+		this.addMore = addMore;
+	}
+
+	public int getChromosomeId() {
+		return chromosomeId;
+	}
+
+	public void setChromosomeId(int chromosomeId) {
+		this.chromosomeId = chromosomeId;
+	}
 
 	public int getId() {
 		return id;

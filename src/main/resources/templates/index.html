@@ -5,7 +5,7 @@
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-<title>DBMS Project - Dashboard</title>
+<title>Chromosomal Database - Dashboard</title>
 <!-- <link href="/css/bootstrap.min.css" rel="stylesheet" th:href="@{/css/bootstrap.min.css}"/> -->
 <link
 	href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -30,10 +30,10 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+        <img th:src="@{img/icon.jpg}" width="50" height="70" style="border-radius: 8px;filter: grayscale(40%)"/>
         </div>
-        <div class="sidebar-brand-text mx-3">DBMS Project </div>
+        <div class="sidebar-brand-text mx-3">Chromosomal Database</div>
       </a>
 
       <!-- Divider -->
@@ -62,7 +62,7 @@
             <a class="collapse-item" th:href="@{/experiment}">Experiment</a>
             <a class="collapse-item" th:href="@{/clinicalSample}">Clinical Sample</a>
             <a class="collapse-item" th:href="@{/measurementUnit}">Measurement Unit</a>  
-            <a class="collapse-item" href="404.html">Organism</a>
+            <a class="collapse-item" th:href="@{/organism}">Organism</a>
           </div>
         </div>
       </li>
@@ -105,7 +105,7 @@
 
        <!-- Topbar -->
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
+        
           <!-- Sidebar Toggle (Topbar) -->
           <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
             <i class="fa fa-bars"></i>
@@ -152,7 +152,7 @@
                       <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${totalSamples}"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                      <i class="fas fa-vials fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -173,7 +173,7 @@
                       </div>
                     </div>
                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                      <i class="fas fa-laptop-medical fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -190,7 +190,7 @@
                       <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${latestOrganismName}"></div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      <i class="fas fa-atom fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -222,7 +222,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; DBMS Project 2020</span>
+            <span>Copyright &copy; Chromosomal Database 2020</span>
           </div>
         </div>
       </footer>

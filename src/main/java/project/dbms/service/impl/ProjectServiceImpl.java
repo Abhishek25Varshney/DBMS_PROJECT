@@ -1,7 +1,12 @@
 package project.dbms.service.impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -70,46 +75,62 @@ public class ProjectServiceImpl implements ProjectService {
 		organism.setScientificName(organismVO.getScientificName());
 		organism.setGenus(organismVO.getGenus());
 		organism.setCellType(organismVO.getCellType());
+		organism.setRegisteredDate(formatDate(new Date()));
 		organismRepo.save(organism);
 
-		for (ChromosomeVO chromosomeVO : organismVO.getChromosomes()) {
-			Chromosome chromosome = new Chromosome();
-			chromosome.setChromosomeNumber(chromosomeVO.getChromosomeNumber());
-			chromosome.setTotalPairs(chromosomeVO.getTotalPairs());
-			chromosome.setNoOfGenes(chromosomeVO.getNoOfGenes());
-			chromosome.setOrganism(organism);
-			chromosomeRepository.save(chromosome);
+	}
 
-			for (GeneSequenceVO geneSequenceVO : chromosomeVO.getGeneSequences()) {
-				GeneSequence geneSequence = new GeneSequence();
-				geneSequence.setSequence(geneSequenceVO.getSequence());
-				geneSequence.setChromosome(chromosome);
-				geneSequenceRepository.save(geneSequence);
+	public static String formatDate(Date date) {
+		String pattern = "dd-MMM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+		return simpleDateFormat.format(date);
+	}
 
-				for (ArrayProbeVO arrayProbeVO : geneSequenceVO.getArrayProbes()) {
-					ArrayProbe arrayProbe = new ArrayProbe();
-					arrayProbe.setArrayProbe(arrayProbeVO.getArrayProbe());
-					arrayProbe.setGeneSequence(geneSequence);
-					arrayProbeRepository.save(arrayProbe);
+	@Override
+	public void createChromosme(ChromosomeVO vo) {
+		Chromosome chromosome = new Chromosome();
+		chromosome.setChromosomeNumber(vo.getChromosomeNumber());
+		chromosome.setTotalPairs(vo.getTotalPairs());
+		chromosome.setNoOfGenes(vo.getNoOfGenes());
+		Organism organism = organismRepo.findOne(vo.getOrganismId());
+		chromosome.setOrganism(organism);
+		chromosomeRepository.save(chromosome);
 
-					for (MRNAExpressionVO mRNAExpressionVO : arrayProbeVO.getmRNAExpression()) {
-						MRNAExpression mRNAExpression = new MRNAExpression();
-						mRNAExpression.setExpression(mRNAExpressionVO.getExpression());
+	}
 
-						Experiment experiment = experimentRepo.findOne(mRNAExpressionVO.getExperimentVO().getId());
-						ClinicalSample clinicalSample = clinicalSampleRepo
-								.findOne(mRNAExpressionVO.getClinicalSampleVO().getId());
-						MeasurementUnit measurementUnit = measurementUnitRepo
-								.findOne(mRNAExpressionVO.getMeasurementUnitVO().getId());
-						mRNAExpression.setExperiment(experiment);
-						mRNAExpression.setClinicalSample(clinicalSample);
-						mRNAExpression.setMeasurementUnit(measurementUnit);
-						mRNAExpression.setArrayProbe(arrayProbe);
-						mrnaExpressionRepository.save(mRNAExpression);
-					}
-				}
-			}
-		}
+	@Override
+	public void createGene(GeneSequenceVO vo) {
+		GeneSequence entity = new GeneSequence();
+		entity.setSequence(vo.getSequence());
+		Chromosome chromosome = chromosomeRepository.findOne(vo.getChromosomeId());
+		entity.setChromosome(chromosome);
+		geneSequenceRepository.save(entity);
+
+	}
+
+	@Override
+	public void createArrayProbe(ArrayProbeVO vo) {
+		ArrayProbe entity = new ArrayProbe();
+		entity.setArrayProbe(vo.getArrayProbe());
+		GeneSequence gene = geneSequenceRepository.findOne(vo.getGeneSequenceId());
+		entity.setGeneSequence(gene);
+		arrayProbeRepository.save(entity);
+
+	}
+
+	@Override
+	public void createMRNA(MRNAExpressionVO vo) {
+		MRNAExpression entity = new MRNAExpression();
+		entity.setExpression(vo.getExpression());
+		ArrayProbe array = arrayProbeRepository.findOne(vo.getArrayProbeId());
+		entity.setArrayProbe(array);
+		Experiment experiment = experimentRepo.findOne(vo.getExperimentId());
+		entity.setExperiment(experiment);
+		ClinicalSample sample = clinicalSampleRepo.findOne(vo.getClinicalSampleId());
+		entity.setClinicalSample(sample);
+		MeasurementUnit unit = measurementUnitRepo.findOne(vo.getMeasurementUnitId());
+		entity.setMeasurementUnit(unit);
+		mrnaExpressionRepository.save(entity);
 
 	}
 
@@ -414,5 +435,103 @@ public class ProjectServiceImpl implements ProjectService {
 		ClinicalSample sample = clinicalSampleRepo.findOne(id);
 		ClinicalSampleVO vo = new ClinicalSampleVO(sample.getId(), sample.getSampleName());
 		return vo;
+	}
+
+	@Override
+	public List<ChromosomeVO> getChromosomeList() {
+		List<ChromosomeVO> list = new ArrayList<ChromosomeVO>();
+		List<Chromosome> dbList = (List<Chromosome>) chromosomeRepository.findAll();
+
+		for (Chromosome entity : dbList) {
+
+			ChromosomeVO vo = new ChromosomeVO();
+			vo.setChromosomeNumber(entity.getChromosomeNumber());
+			vo.setId(entity.getId());
+			list.add(vo);
+		}
+		return list;
+	}
+
+	@Override
+	public List<GeneSequenceVO> getGeneList() {
+		List<GeneSequenceVO> list = new ArrayList<GeneSequenceVO>();
+		List<GeneSequence> dbList = (List<GeneSequence>) geneSequenceRepository.findAll();
+
+		for (GeneSequence entity : dbList) {
+
+			GeneSequenceVO vo = new GeneSequenceVO();
+			vo.setSequence(entity.getSequence());
+			vo.setId(entity.getId());
+			list.add(vo);
+		}
+		return list;
+	}
+
+	@Override
+	public List<ArrayProbeVO> getArrayList() {
+		List<ArrayProbeVO> list = new ArrayList<ArrayProbeVO>();
+		List<ArrayProbe> dbList = (List<ArrayProbe>) arrayProbeRepository.findAll();
+
+		for (ArrayProbe entity : dbList) {
+
+			ArrayProbeVO vo = new ArrayProbeVO();
+			vo.setArrayProbe(entity.getArrayProbe());
+			vo.setId(entity.getId());
+			list.add(vo);
+		}
+		return list;
+	}
+
+	@Override
+	public List<List<Map<Object, Object>>> getCanvasjsChartData() {
+		Map<Object, Object> map = null;
+		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
+		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
+
+		List<String> species = organismRepo.findAllOrganismSpecies();
+		for (String string : species) {
+			map = new HashMap<Object, Object>();
+			map.put("name", string);
+			map.put("y", 100 * organismRepo.countOrganismOfSpecificSpecies(string) / organismRepo.countAllOrganism());
+			dataPoints1.add(map);
+		}
+
+		return list;
+	}
+
+	@Override
+	public List<List<Map<Object, Object>>> getCanvasjsBarChartData() {
+		Map<Object, Object> map = null;
+		List<List<Map<Object, Object>>> list = new ArrayList<List<Map<Object, Object>>>();
+		List<Map<Object, Object>> dataPoints1 = new ArrayList<Map<Object, Object>>();
+
+		List<Organism> allOrganism = (List<Organism>) organismRepo.findAll();
+		Map<String, Integer> dateWiseCountMap = new HashMap<String, Integer>();
+		for (Organism organism : allOrganism) {
+			if (!dateWiseCountMap.containsKey(organism.getRegisteredDate())) {
+				dateWiseCountMap.put(organism.getRegisteredDate(), 0);
+			}
+			dateWiseCountMap.put(organism.getRegisteredDate(), dateWiseCountMap.get(organism.getRegisteredDate()) + 1);
+		}
+
+		for (Map.Entry<String, Integer> entry : dateWiseCountMap.entrySet()) {
+			map = new HashMap<Object, Object>();
+			map.put("x", parseDate(entry.getKey()).getTime());
+			map.put("y", entry.getValue());
+			dataPoints1.add(map);
+		}
+
+		list.add(dataPoints1);
+		return list;
+	}
+
+	private Date parseDate(String registeredDate) {
+		Date date = null;
+		try {
+			date = new SimpleDateFormat("dd-MMM-yyyy").parse(registeredDate);
+		} catch (ParseException e) {
+			log.error("Error while parsing date.");
+		}
+		return date;
 	}
 }

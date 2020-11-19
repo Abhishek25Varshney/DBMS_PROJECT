@@ -9,6 +9,21 @@ public class ChromosomeVO {
 	private int totalPairs;
 	private int noOfGenes;
 	private Set<GeneSequenceVO> geneSequences = new HashSet<GeneSequenceVO>();
+	private int organismId;
+	private String addMore="NO";
+	
+	public String getAddMore() {
+		return addMore;
+	}
+	public void setAddMore(String addMore) {
+		this.addMore = addMore;
+	}
+	public int getOrganismId() {
+		return organismId;
+	}
+	public void setOrganismId(int organismId) {
+		this.organismId = organismId;
+	}
 	public int getId() {
 		return id;
 	}

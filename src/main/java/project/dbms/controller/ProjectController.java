@@ -1,20 +1,26 @@
 package project.dbms.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import project.dbms.service.ProjectService;
+import project.dbms.vo.ArrayProbeVO;
+import project.dbms.vo.ChromosomeVO;
 import project.dbms.vo.ClinicalSampleVO;
 import project.dbms.vo.ExperimentVO;
+import project.dbms.vo.GeneSequenceVO;
+import project.dbms.vo.MRNAExpressionVO;
 import project.dbms.vo.MeasurementUnitVO;
 import project.dbms.vo.OrganismVO;
 
@@ -55,7 +61,7 @@ public class ProjectController {
 		service.deleteExperiment(id);
 		return redirectToDashboard("/all/experiment");
 	}
-	
+
 	@GetMapping("/experiment/{id}")
 	public ModelAndView getExperiment(@PathVariable("id") int id) {
 		ModelAndView mv = new ModelAndView();
@@ -93,6 +99,7 @@ public class ProjectController {
 		service.deleteClinicalSample(id);
 		return redirectToDashboard("/all/clinicalSample");
 	}
+
 	@GetMapping("/clinicalSample/{id}")
 	public ModelAndView getClinicalSample(@PathVariable("id") int id) {
 		ModelAndView mv = new ModelAndView();
@@ -130,6 +137,7 @@ public class ProjectController {
 		service.deleteMeasurementUnit(id);
 		return redirectToDashboard("/all/measurementUnit");
 	}
+
 	@GetMapping("/measurementUnit/{id}")
 	public ModelAndView getMeasurementunit(@PathVariable("id") int id) {
 		ModelAndView mv = new ModelAndView();
@@ -137,6 +145,7 @@ public class ProjectController {
 		mv.addObject("measurementUnitVO", service.getMeasurementUnit(id));
 		return mv;
 	}
+
 	@GetMapping("/all/measurementUnit")
 	public ModelAndView getMeasurementUnit() {
 		ModelAndView mv = new ModelAndView();
@@ -146,14 +155,44 @@ public class ProjectController {
 
 	}
 
+	@GetMapping("/organism")
+	public ModelAndView getOrganismPage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("organism");
+		mv.addObject("organismVO", new OrganismVO());
+		return mv;
+	}
+
+//	
 	@PostMapping("/organism")
-	@ResponseBody
-	public String createOrganism(@RequestBody OrganismVO organismVO) {
+	public ModelAndView createOrganism(@ModelAttribute("organismVO") OrganismVO organismVO) {
 		service.createOrganism(organismVO);
-		return "SUCCESS";
+		return redirectToDashboard("/chromosome");
 
 	}
 
+	@GetMapping("/chromosome")
+	public ModelAndView getChromosomePage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("chromosome");
+		mv.addObject("chromosomeVO", new ChromosomeVO());
+		mv.addObject("organismList", service.getOrganisms());
+		List<String> allStatus = new ArrayList<String>();
+		allStatus.add("YES");
+		allStatus.add("NO");
+		mv.addObject("allStatus", allStatus);
+		return mv;
+	}
+
+	@PostMapping("/chromosome")
+	public ModelAndView createChromosome(@ModelAttribute("chromosomeVO") ChromosomeVO vo) {
+		service.createChromosme(vo);
+		if (vo.getAddMore().equalsIgnoreCase("YES")) {
+			return redirectToDashboard("/chromosome");
+		} else {
+			return redirectToDashboard("/gene");
+		}
+	}
 
 	@GetMapping("/delete/organism/{id}")
 	public ModelAndView deleteOrganism(@PathVariable("id") int id) {
@@ -161,11 +200,28 @@ public class ProjectController {
 		return redirectToDashboard("/all/organism");
 	}
 
+	@GetMapping("/organism/{id}")
+	public ModelAndView viewOrganism(@PathVariable("id") int id) {
+
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("view-organism");
+		mv.addObject("organismVO", service.getOrganism(id));
+		return mv;
+	}
+
 	@GetMapping("/all/organism")
 	public ModelAndView getOrganisms() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("organismList");
 		mv.addObject("organismList", service.getOrganisms());
+		return mv;
+	}
+
+	@GetMapping("/chromosome/{id}")
+	public ModelAndView getChromosomePage(@PathVariable("id") int id) {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("chromosome");
+		mv.addObject("vo", new ChromosomeVO());
 		return mv;
 	}
 
@@ -179,6 +235,90 @@ public class ProjectController {
 	private ModelAndView redirectToDashboard(String apiUrl) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("redirect:" + apiUrl);
+		return mv;
+	}
+
+	@GetMapping("/gene")
+	public ModelAndView getGenePage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("gene");
+		mv.addObject("geneVO", new GeneSequenceVO());
+		mv.addObject("chromosomeList", service.getChromosomeList());
+		List<String> allStatus = new ArrayList<String>();
+		allStatus.add("YES");
+		allStatus.add("NO");
+		mv.addObject("allStatus", allStatus);
+		return mv;
+	}
+
+	@PostMapping("/gene")
+	public ModelAndView createGenePage(@ModelAttribute("gene") GeneSequenceVO vo) {
+		service.createGene(vo);
+		if (vo.getAddMore().equalsIgnoreCase("YES")) {
+			return redirectToDashboard("/gene");
+		} else {
+			return redirectToDashboard("/array");
+		}
+
+	}
+
+	@GetMapping("/array")
+	public ModelAndView getArrayPage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("array");
+		mv.addObject("arrayVO", new ArrayProbeVO());
+		mv.addObject("geneList", service.getGeneList());
+		List<String> allStatus = new ArrayList<String>();
+		allStatus.add("YES");
+		allStatus.add("NO");
+		mv.addObject("allStatus", allStatus);
+		return mv;
+	}
+
+	@PostMapping("/array")
+	public ModelAndView createArrayPage(@ModelAttribute("array") ArrayProbeVO vo) {
+		service.createArrayProbe(vo);
+		if (vo.getAddMore().equalsIgnoreCase("YES")) {
+			return redirectToDashboard("/array");
+		} else {
+			return redirectToDashboard("/mrna");
+		}
+
+	}
+
+	@GetMapping("/mrna")
+	public ModelAndView getMRNAPage() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("mrna");
+		mv.addObject("mrnaVO", new MRNAExpressionVO());
+		mv.addObject("arrayList", service.getArrayList());
+		mv.addObject("experimentList", service.getExperiment());
+		mv.addObject("unitList", service.getMeasurementUnit());
+		mv.addObject("sampleList", service.getClinicalSample());
+		List<String> allStatus = new ArrayList<String>();
+		allStatus.add("YES");
+		allStatus.add("NO");
+		mv.addObject("allStatus", allStatus);
+		return mv;
+	}
+
+	@PostMapping("/mrna")
+	public ModelAndView createMRNAPage(@ModelAttribute("mrnaVO") MRNAExpressionVO vo) {
+		service.createMRNA(vo);
+		if (vo.getAddMore().equalsIgnoreCase("YES")) {
+			return redirectToDashboard("/mrna");
+		} else {
+			return redirectToDashboard("/dashboard");
+		}
+
+	}
+
+	@GetMapping("/canvasjschart")
+	public ModelAndView springMVC() {
+		List<List<Map<Object, Object>>> canvasjsDataList = service.getCanvasjsChartData();
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("chart");
+		mv.addObject("dataPointsList", canvasjsDataList);
 		return mv;
 	}
 

@@ -1,9 +1,14 @@
 package project.dbms.service;
 
 import java.util.List;
+import java.util.Map;
 
+import project.dbms.vo.ArrayProbeVO;
+import project.dbms.vo.ChromosomeVO;
 import project.dbms.vo.ClinicalSampleVO;
 import project.dbms.vo.ExperimentVO;
+import project.dbms.vo.GeneSequenceVO;
+import project.dbms.vo.MRNAExpressionVO;
 import project.dbms.vo.MeasurementUnitVO;
 import project.dbms.vo.OrganismVO;
 
@@ -50,5 +55,23 @@ public interface ProjectService {
 	ClinicalSampleVO getClinicalSample(int id);
 
 	MeasurementUnitVO getMeasurementUnit(int id);
+
+	void createChromosme(ChromosomeVO vo);
+
+	List<ChromosomeVO> getChromosomeList();
+
+	void createGene(GeneSequenceVO vo);
+
+	List<GeneSequenceVO> getGeneList();
+
+	void createArrayProbe(ArrayProbeVO vo);
+
+	List<ArrayProbeVO> getArrayList();
+
+	void createMRNA(MRNAExpressionVO vo);
+
+	List<List<Map<Object, Object>>> getCanvasjsChartData();
+
+	List<List<Map<Object, Object>>> getCanvasjsBarChartData();
 
 }

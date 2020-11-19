@@ -6,6 +6,51 @@ public class MRNAExpressionVO {
 	private ExperimentVO experimentVO;
 	private ClinicalSampleVO clinicalSampleVO;
 	private MeasurementUnitVO measurementUnitVO;
+	
+	private int arrayProbeId;
+	private int experimentId;
+	private int clinicalSampleId;
+	private int measurementUnitId;
+	private String addMore="NO";
+	
+	public String getAddMore() {
+		return addMore;
+	}
+
+	public void setAddMore(String addMore) {
+		this.addMore = addMore;
+	}
+	public int getArrayProbeId() {
+		return arrayProbeId;
+	}
+
+	public void setArrayProbeId(int arrayProbeId) {
+		this.arrayProbeId = arrayProbeId;
+	}
+
+	public int getExperimentId() {
+		return experimentId;
+	}
+
+	public void setExperimentId(int experimentId) {
+		this.experimentId = experimentId;
+	}
+
+	public int getClinicalSampleId() {
+		return clinicalSampleId;
+	}
+
+	public void setClinicalSampleId(int clinicalSampleId) {
+		this.clinicalSampleId = clinicalSampleId;
+	}
+
+	public int getMeasurementUnitId() {
+		return measurementUnitId;
+	}
+
+	public void setMeasurementUnitId(int measurementUnitId) {
+		this.measurementUnitId = measurementUnitId;
+	}
 
 	public int getId() {
 		return id;

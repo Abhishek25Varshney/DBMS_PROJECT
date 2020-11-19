@@ -35,10 +35,10 @@ th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" />
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" th:href="@{/dashboard}">
-      <div class="sidebar-brand-icon rotate-n-15">
-        <i class="fas fa-laugh-wink"></i>
-      </div>
-      <div class="sidebar-brand-text mx-3">DBMS Project </div>
+    <div class="sidebar-brand-icon">
+    <img th:src="@{img/icon.jpg}" width="50" height="70" style="border-radius: 8px;filter: grayscale(40%)"/>
+    </div>
+      <div class="sidebar-brand-text mx-3">Chromosomal Database</div>
     </a>
 
     <!-- Divider -->
@@ -67,7 +67,7 @@ th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" />
       		<a class="collapse-item" th:href="@{/experiment}">Experiment</a>
       		<a class="collapse-item" th:href="@{/clinicalSample}">Clinical Sample</a>
       		<a class="collapse-item" th:href="@{/measurementUnit}">Measurement Unit</a>  
-      		<a class="collapse-item" href="404.html">Organism</a>
+      		 <a class="collapse-item" th:href="@{/organism}">Organism</a>
       	</div>
       </div>
     </li>
@@ -170,7 +170,7 @@ th:href="@{/vendor/datatables/dataTables.bootstrap4.min.css}" />
     <footer class="sticky-footer bg-white">
       <div class="container my-auto">
         <div class="copyright text-center my-auto">
-          <span>Copyright &copy; DBMS Project 2020</span>
+          <span>Copyright &copy; Chromosomal Database 2020</span>
         </div>
       </div>
     </footer>

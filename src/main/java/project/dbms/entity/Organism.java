@@ -34,6 +34,18 @@ public class Organism implements Serializable {
 
 	@OneToMany(mappedBy = "organism", fetch = FetchType.EAGER)
 	private Set<Chromosome> chromosomes = new HashSet<Chromosome>();
+	
+	@Column(name = "date")
+	private String registeredDate;
+
+
+	public String getRegisteredDate() {
+		return registeredDate;
+	}
+
+	public void setRegisteredDate(String registeredDate) {
+		this.registeredDate = registeredDate;
+	}
 
 	public Set<Chromosome> getChromosomes() {
 		return chromosomes;

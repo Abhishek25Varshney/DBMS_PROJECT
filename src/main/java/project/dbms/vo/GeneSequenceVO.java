@@ -1,15 +1,26 @@
 package project.dbms.vo;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-public class GeneSequenceVO {
+public class GeneSequenceVO implements Comparable<GeneSequenceVO>{
 	private int id;
 	private String sequence;
-	private Set<ArrayProbeVO> arrayProbes = new HashSet<ArrayProbeVO>();
+	private List<ArrayProbeVO> arrayProbes = new ArrayList<ArrayProbeVO>();
 	private int chromosomeId;
 	private String addMore="NO";
+	private int counter;
 	
+	
+	
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
 	public String getAddMore() {
 		return addMore;
 	}
@@ -42,12 +53,22 @@ public class GeneSequenceVO {
 		this.sequence = sequence;
 	}
 
-	public Set<ArrayProbeVO> getArrayProbes() {
+	public List<ArrayProbeVO> getArrayProbes() {
 		return arrayProbes;
 	}
 
-	public void setArrayProbes(Set<ArrayProbeVO> arrayProbes) {
+	public void setArrayProbes(List<ArrayProbeVO> arrayProbes) {
 		this.arrayProbes = arrayProbes;
+	}
+	@Override
+	public int compareTo(GeneSequenceVO o) {
+		if (this.getCounter() > o.getCounter()) {
+			return 1;
+		} else if (this.getCounter() < o.getCounter()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 
 }

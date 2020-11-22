@@ -18,8 +18,7 @@
 <link rel="stylesheet" type="text/css"
 	href="/css/sb-admin-2.min.css"
 	th:href="@{/css/sb-admin-2.min.css}" />
-<script type="text/javascript"
-src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body id="page-top">
@@ -299,6 +298,10 @@ src="https://www.gstatic.com/charts/loader.js"></script>
 		});
 		google.charts.setOnLoadCallback(drawColumnChart);
 		google.charts.setOnLoadCallback(drawPieChart);
+		$(window).resize(function(){
+			drawColumnChart();
+			drawPieChart();
+			});
 	});
 
 	function drawColumnChart() {
@@ -331,8 +334,7 @@ src="https://www.gstatic.com/charts/loader.js"></script>
 			data.addRow([ key, pie_data[key] ]);
 		});
 		var options = {
-			title : '',
-			colors: ['#36b9cc','#20c9a6']
+			title : ''
 		};
 		var chart = new google.visualization.PieChart(document
 				.getElementById('piechart'));

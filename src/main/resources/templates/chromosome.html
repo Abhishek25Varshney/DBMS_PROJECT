@@ -39,12 +39,15 @@
                   <h1 class="h4 text-gray-900 mb-4">Enter Chromosome Data!</h1>
                 </div>
                 <form class="user" action="#" th:action="@{/chromosome}" th:object="${chromosomeVO}" method="post">
+                	<label for="name">Chromosome Number:</label>
                   	<div class="form-group">
                   		<input type="number" class="form-control form-control-user" id="exampleInputEmail" th:value="${chromosomeVO.chromosomeNumber}" th:field="${chromosomeVO.chromosomeNumber}" aria-describedby="emailHelp" placeholder="Enter Chromosome Number..."/>
                   	</div>
+                  	<label for="name">Total Pairs:</label>
                   	<div class="form-group">
                   		<input type="number" class="form-control form-control-user" id="exampleInputEmail" th:value="${chromosomeVO.totalPairs}" th:field="${chromosomeVO.totalPairs}" aria-describedby="emailHelp" placeholder="Enter Total Pairs..."/>
                     </div>
+                    <label for="name">Number Of Genes:</label>
                     <div class="form-group">
                     	<input type="number" class="form-control form-control-user" id="exampleInputEmail" th:value="${chromosomeVO.noOfGenes}" th:field="${chromosomeVO.noOfGenes}" aria-describedby="emailHelp" placeholder="Enter Number of Genes..."/>
                     	<input type="hidden" th:field="${chromosomeVO.id}" th:value="${chromosomeVO.id}" />

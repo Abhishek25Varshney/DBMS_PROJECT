@@ -3,6 +3,8 @@ package project.dbms.service.impl;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -146,29 +148,43 @@ public class ProjectServiceImpl implements ProjectService {
 		organismVO.setCellType(organism.getCellType());
 		organismVO.setId(organism.getId());
 
+		int chromosomeCounter = 0;
 		for (Chromosome chromosome : organism.getChromosomes()) {
 			ChromosomeVO chromosomeVO = new ChromosomeVO();
 			chromosomeVO.setChromosomeNumber(chromosome.getChromosomeNumber());
 			chromosomeVO.setTotalPairs(chromosome.getTotalPairs());
 			chromosomeVO.setNoOfGenes(chromosome.getNoOfGenes());
 			chromosomeVO.setId(chromosome.getId());
+			chromosomeCounter = chromosomeCounter + 1;
+			System.out.println(chromosomeCounter);
+			chromosomeVO.setCounter(chromosomeCounter);
 			organismVO.getChromosomes().add(chromosomeVO);
 
+			int geneCounter = 0;
 			for (GeneSequence geneSequence : chromosome.getGeneSequences()) {
 				GeneSequenceVO geneSequenceVO = new GeneSequenceVO();
 				geneSequenceVO.setSequence(geneSequence.getSequence());
 				geneSequenceVO.setId(geneSequence.getId());
+				geneCounter = geneCounter + 1;
+				geneSequenceVO.setCounter(geneCounter);
 				chromosomeVO.getGeneSequences().add(geneSequenceVO);
 
+				int arrayCounter = 0;
 				for (ArrayProbe arrayProbe : geneSequence.getArrayProbes()) {
 					ArrayProbeVO arrayProbeVO = new ArrayProbeVO();
 					arrayProbeVO.setArrayProbe(arrayProbe.getArrayProbe());
 					arrayProbeVO.setId(arrayProbe.getId());
+					arrayCounter = arrayCounter + 1;
+					arrayProbeVO.setCounter(arrayCounter);
 					geneSequenceVO.getArrayProbes().add(arrayProbeVO);
+					int mrnaCounter = 0;
 
 					for (MRNAExpression mRNAExpression : arrayProbe.getmRNAExpression()) {
 						MRNAExpressionVO mRNAExpressionVO = new MRNAExpressionVO();
 						mRNAExpressionVO.setExpression(mRNAExpression.getExpression());
+						mrnaCounter = mrnaCounter + 1;
+						mRNAExpressionVO.setCounter(mrnaCounter);
+
 						mRNAExpressionVO.setId(mRNAExpression.getId());
 						if (mRNAExpression.getExperiment() != null) {
 							mRNAExpressionVO.setExperimentVO(new ExperimentVO(mRNAExpression.getExperiment().getId(),
@@ -187,10 +203,14 @@ public class ProjectServiceImpl implements ProjectService {
 											mRNAExpression.getMeasurementUnit().getName()));
 						}
 						arrayProbeVO.getmRNAExpression().add(mRNAExpressionVO);
+						Collections.sort(arrayProbeVO.getmRNAExpression());
 					}
+					Collections.sort(geneSequenceVO.getArrayProbes());
 				}
+				Collections.sort(chromosomeVO.getGeneSequences());
 			}
 		}
+		Collections.sort(organismVO.getChromosomes());
 		return organismVO;
 	}
 
@@ -546,11 +566,10 @@ public class ProjectServiceImpl implements ProjectService {
 			}
 			dateWiseCountMap.put(organism.getRegisteredDate(), dateWiseCountMap.get(organism.getRegisteredDate()) + 1);
 		}
-		
-		
+
 		return dateWiseCountMap;
 	}
-	
+
 	@Override
 	public Map<String, Integer> getPieChartData() {
 		List<String> species = organismRepo.findAllOrganismSpecies();
@@ -560,7 +579,7 @@ public class ProjectServiceImpl implements ProjectService {
 				pieChartMap.put(string, organismRepo.countOrganismOfSpecificSpecies(string));
 			}
 		}
-		
+
 		return pieChartMap;
 	}
 }

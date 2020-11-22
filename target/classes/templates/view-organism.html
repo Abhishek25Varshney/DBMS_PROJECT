@@ -33,21 +33,80 @@
           <!-- Nested Row within Card Body -->
           	<div class="p-5">
                 <div class="text-center">
-                  <h1 class="h4 text-gray-900 mb-4">Organism Data!</h1>
+                  <h1 class="h4 text-gray-900 mb-4">Organism Details</h1>
                 </div>
                 <form class="user" action="#" th:action="@{/all/organism}" th:object="${organismVO}" method="get">
-                  	<div class="form-group">
+                <div class="form-group">
+                  	<label for="name">Scientific Name:</label>
                   		<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${organismVO.scientificName}" th:field="${organismVO.scientificName}" aria-describedby="emailHelp" disabled="disabled" />
                   	</div>
                   	<div class="form-group">
+                  		<label for="name">Species:</label>
                   		<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${organismVO.species}" th:field="${organismVO.species}" aria-describedby="emailHelp" disabled="disabled"/>
                     </div>
                     <div class="form-group">
+                    <label for="name">Genus:</label>
                     	<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${organismVO.genus}" th:field="${organismVO.genus}" aria-describedby="emailHelp" disabled="disabled"/>
                     </div>
                     <div class="form-group">
+                    	<label for="name">Cell Type:</label>
                     	<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${organismVO.cellType}" th:field="${organismVO.cellType}" aria-describedby="emailHelp" disabled="disabled" />
                     </div>
+                    <div th:each="chromosome : ${organismVO.chromosomes}">
+                    	<div style="border: thin solid grey;border-radius: 5px;margin: 15px">
+                    	<legend th:text="'Chromosome '+${chromosome.counter}+':'"></legend>
+                    	<div class="form-group" >
+                    		<label for="name">Chromosome Number:</label>
+                    			<input type="number" class="form-control form-control-user" id="exampleInputEmail" th:value="${chromosome.chromosomeNumber}" aria-describedby="emailHelp" disabled="disabled" />
+                    	</div>
+                    
+                    	<div class="form-group">
+                    		<label for="name">Total Pairs:</label>
+                    			<input type="number" class="form-control form-control-user" id="exampleInputEmail" th:value="${chromosome.totalPairs}" aria-describedby="emailHelp" disabled="disabled"/>
+                    	</div>
+                    	<div class="form-group">
+                    		<label for="name">Number Of Genes:</label>
+                    			<input type="number" class="form-control form-control-user" id="exampleInputEmail" th:value="${chromosome.noOfGenes}" aria-describedby="emailHelp" disabled="disabled"/>
+                    	</div>
+                    	<div th:each="geneSequence : ${chromosome.geneSequences}">
+                    	<div style="border: thin solid grey;border-radius: 5px;margin: 5px">
+                    		<div class="form-group">
+                    		<label th:text="'Gene Sequence '+${geneSequence.counter}+':'"></label>
+                    			<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${geneSequence.sequence}" aria-describedby="emailHelp" disabled="disabled"/>
+                    		</div>
+                        	<div th:each="array : ${geneSequence.arrayProbes}">
+                        	<div style="border: thin solid grey;border-radius: 5px;margin: 5px">
+                        		<div class="form-group">
+                        			<label th:text="'Array Probe '+${array.counter}+':'"></label>
+                        				<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${array.arrayProbe}" aria-describedby="emailHelp" disabled="disabled"/>
+                        		</div>
+                        		<div th:each="mrna : ${array.mRNAExpression}">
+                        		<div style="border: thin solid grey;border-radius: 5px;margin: 5px">
+                        			<div class="form-group">
+                        			<label th:text="'MRNA Expression '+${mrna.counter}+':'"></label>
+                    					<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${mrna.expression}" aria-describedby="emailHelp" disabled="disabled"/>
+                    				</div>
+                    				<div class="form-group">
+                						<label for="name">Experiment:</label>
+                						<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${mrna.experimentVO.name}" aria-describedby="emailHelp" disabled="disabled"/>
+                					</div>
+                					<div class="form-group">
+            							<label for="name">Clinical Sample:</label>
+            							<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${mrna.clinicalSampleVO.sampleName}" aria-describedby="emailHelp" disabled="disabled"/>
+            						</div>
+            						<div class="form-group">
+            							<label for="name">Measurement Unit:</label>
+            							<input type="text" class="form-control form-control-user" id="exampleInputEmail" th:value="${mrna.measurementUnitVO.name}" aria-describedby="emailHelp" disabled="disabled"/>
+            						</div>
+            						</div>
+                    			</div>
+                    			</div>
+                    			</div>
+                        	</div>
+                    		
+                    	</div>
+                    </div>
+                	</div>
                   <p><input class="btn btn-primary btn-user btn-block" type="submit" value="Go Back" /></p>
                 </form>
           </div>

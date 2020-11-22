@@ -1,6 +1,7 @@
 package project.dbms.vo;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 public class OrganismVO {
@@ -9,7 +10,7 @@ public class OrganismVO {
 	private String scientificName;
 	private String genus;
 	private String cellType;
-	private Set<ChromosomeVO> chromosomes = new HashSet<ChromosomeVO>();
+	private List<ChromosomeVO> chromosomes = new ArrayList<ChromosomeVO>();
 
 	public int getId() {
 		return id;
@@ -51,11 +52,11 @@ public class OrganismVO {
 		this.cellType = cellType;
 	}
 
-	public Set<ChromosomeVO> getChromosomes() {
+	public List<ChromosomeVO> getChromosomes() {
 		return chromosomes;
 	}
 
-	public void setChromosomes(Set<ChromosomeVO> chromosomes) {
+	public void setChromosomes(List<ChromosomeVO> chromosomes) {
 		this.chromosomes = chromosomes;
 	}
 

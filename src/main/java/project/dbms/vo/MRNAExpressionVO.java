@@ -1,6 +1,6 @@
 package project.dbms.vo;
 
-public class MRNAExpressionVO {
+public class MRNAExpressionVO implements Comparable<MRNAExpressionVO>{
 	private int id;
 	private String expression;
 	private ExperimentVO experimentVO;
@@ -12,7 +12,18 @@ public class MRNAExpressionVO {
 	private int clinicalSampleId;
 	private int measurementUnitId;
 	private String addMore="NO";
+	private int counter;
 	
+	
+	
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
+
 	public String getAddMore() {
 		return addMore;
 	}
@@ -91,6 +102,16 @@ public class MRNAExpressionVO {
 
 	public void setMeasurementUnitVO(MeasurementUnitVO measurementUnitVO) {
 		this.measurementUnitVO = measurementUnitVO;
+	}
+	@Override
+	public int compareTo(MRNAExpressionVO o) {
+		if (this.getCounter() > o.getCounter()) {
+			return 1;
+		} else if (this.getCounter() < o.getCounter()) {
+			return -1;
+		} else {
+			return 0;
+		}
 	}
 
 }

@@ -1,31 +1,21 @@
 package project.dbms.vo;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import project.dbms.entity.Chromosome;
-import project.dbms.entity.GeneSequence;
-import project.dbms.entity.MRNAExpression;
-
-public class ArrayProbeVO {
+public class ArrayProbeVO implements Comparable<ArrayProbeVO>{
 	private int id;
 
 	private String arrayProbe;
 
-	private Set<MRNAExpressionVO> mRNAExpression = new HashSet<MRNAExpressionVO>();
+	private List<MRNAExpressionVO> mRNAExpression = new ArrayList<MRNAExpressionVO>();
 	
 	private int geneSequenceId;
 
 	private String addMore="NO";
+	
+	private int counter;
 	
 	public String getAddMore() {
 		return addMore;
@@ -60,14 +50,32 @@ public class ArrayProbeVO {
 	}
 
 
-	public Set<MRNAExpressionVO> getmRNAExpression() {
+
+	public List<MRNAExpressionVO> getmRNAExpression() {
 		return mRNAExpression;
 	}
 
-	public void setmRNAExpression(Set<MRNAExpressionVO> mRNAExpression) {
+	public void setmRNAExpression(List<MRNAExpressionVO> mRNAExpression) {
 		this.mRNAExpression = mRNAExpression;
 	}
+
+	public int getCounter() {
+		return counter;
+	}
+
+	public void setCounter(int counter) {
+		this.counter = counter;
+	}
 	
-	
+	@Override
+	public int compareTo(ArrayProbeVO o) {
+		if (this.getCounter() > o.getCounter()) {
+			return 1;
+		} else if (this.getCounter() < o.getCounter()) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
 
 }
